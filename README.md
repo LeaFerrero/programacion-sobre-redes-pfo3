@@ -29,7 +29,7 @@ Protocolo: un mensaje JSON por línea sobre TCP.
 
 ```bash
 git clone https://github.com/LeaFerrero/programacion-sobre-redes-pfo3
-cd <programacion-sobre-redes-pfo3>
+cd programacion-sobre-redes-pfo3
 ```
 
 ### 2. Levantar los workers (una terminal por worker)
