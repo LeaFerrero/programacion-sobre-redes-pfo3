@@ -1,5 +1,7 @@
 # PFO 3: Rediseño como Sistema Distribuido (Cliente-Servidor)
 
+**Autor:** Leandro Raúl Ferrero
+
 ## Diagrama de arquitectura
 
 ![Diagrama de arquitectura](diatrama/diagrama.png)
