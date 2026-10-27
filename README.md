@@ -4,7 +4,7 @@
 
 ## Diagrama de arquitectura
 
-![Diagrama de arquitectura](diatrama/diagrama.png)
+![Diagrama de arquitectura](diagrama/diagrama.png)
 
 **Rol de cada componente**
 
@@ -65,7 +65,7 @@ python cliente.py
 
 > En Linux/macOS puede ser necesario usar `python3` en lugar de `python`.
 
-**Importante:** respetá el orden: primero los workers, después el servidor y al final el cliente.
+**Importante:** respete el orden: primero los workers, después el servidor y al final el cliente.
 
 ## Salida esperada del cliente
 
@@ -81,8 +81,8 @@ Los workers que procesan cada tarea pueden variar entre ejecuciones. La tarea 5 
 
 ## Probar la tolerancia a fallos
 
-1. Con todo corriendo, cerrá un worker con `Ctrl + C`.
-2. Volvé a ejecutar `python cliente.py`.
+1. Con todo corriendo, cierre un worker con `Ctrl + C`.
+2. Vuelva a ejecutar `python cliente.py`.
 3. El servidor muestra `worker ... no disponible, probando otro` y las tareas se completan con los workers restantes.
 
 ## Tipos de tareas disponibles
@@ -94,20 +94,10 @@ Los workers que procesan cada tarea pueden variar entre ejecuciones. La tarea 5 
 | `mayusculas` | texto            | texto en mayúsculas         |
 | `fibonacci`  | entero           | n-ésimo número de Fibonacci |
 
-Para agregar tareas propias, editá la lista `TAREAS` en `cliente.py`.
+Para agregar tareas propias, edite la lista `TAREAS` en `cliente.py`.
 
 ## Problemas frecuentes
 
-- **`Address already in use`:** el puerto está ocupado por una ejecución anterior. Cerrá esos procesos o esperá unos segundos.
-- **`Connection refused` en el cliente:** el servidor no está corriendo. Levantalo antes de ejecutar el cliente.
-- **`No hay workers disponibles`:** no hay ningún worker activo. Levantá al menos uno.
-
-## Estructura del repositorio
-
-```
-.
-├── README.md
-├── servidor.py   # recibe tareas de los clientes y las distribuye (round-robin)
-├── worker.py     # procesa tareas con un pool de hilos
-└── cliente.py    # envía tareas y muestra los resultados
-```
+- **`Address already in use`:** el puerto está ocupado por una ejecución anterior. Cierre esos procesos o espere unos segundos.
+- **`Connection refused` en el cliente:** el servidor no está corriendo. Levántelo antes de ejecutar el cliente.
+- **`No hay workers disponibles`:** no hay ningún worker activo. Levante al menos uno.
