@@ -2,43 +2,7 @@
 
 ## Diagrama de arquitectura
 
-```mermaid
-flowchart TB
-    subgraph Clientes
-        M[Cliente móvil]
-        W[Cliente web]
-    end
-
-    LB[Balanceador de carga<br/>Nginx / HAProxy]
-
-    subgraph Servidores["Servidores workers"]
-        S1[Worker 1<br/>pool de hilos]
-        S2[Worker 2<br/>pool de hilos]
-        S3[Worker 3<br/>pool de hilos]
-    end
-
-    MQ[(Cola de mensajes<br/>RabbitMQ)]
-
-    subgraph Almacenamiento["Almacenamiento distribuido"]
-        PG[(PostgreSQL<br/>datos relacionales)]
-        S3B[(S3<br/>archivos / objetos)]
-    end
-
-    M -- TCP/sockets --> LB
-    W -- TCP/sockets --> LB
-    LB --> S1
-    LB --> S2
-    LB --> S3
-    S1 <--> MQ
-    S2 <--> MQ
-    S3 <--> MQ
-    S1 --> PG
-    S2 --> PG
-    S3 --> PG
-    S1 --> S3B
-    S2 --> S3B
-    S3 --> S3B
-```
+![Diagrama de arquitectura](diatrama/diagrama.png)
 
 **Rol de cada componente**
 
@@ -64,8 +28,8 @@ Protocolo: un mensaje JSON por línea sobre TCP.
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/<tu-usuario>/<nombre-del-repo>.git
-cd <nombre-del-repo>
+git clone https://github.com/LeaFerrero/programacion-sobre-redes-pfo3
+cd <programacion-sobre-redes-pfo3>
 ```
 
 ### 2. Levantar los workers (una terminal por worker)

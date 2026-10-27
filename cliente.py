@@ -16,7 +16,6 @@ TAREAS = [
     {"id": 5, "tipo": "inexistente", "datos": None},  # prueba de error
 ]
 
-
 def main():
     with socket.create_connection((HOST, PUERTO), timeout=10) as s:
         lector = s.makefile("r", encoding="utf-8")
@@ -28,7 +27,6 @@ def main():
                       f"(procesada por {respuesta['worker']})")
             else:
                 print(f"Tarea {respuesta.get('id')} -> ERROR: {respuesta['error']}")
-
 
 if __name__ == "__main__":
     main()
