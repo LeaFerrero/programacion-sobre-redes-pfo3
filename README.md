@@ -49,6 +49,7 @@ cd programacion-sobre-redes-pfo3
 ### 2. Levantar los workers (una terminal por worker)
 
 Cada worker recibe el puerto y, opcionalmente, la cantidad de hilos de su pool (por defecto 4).
+Solo se aceptan los puertos **6001, 6002 y 6003**, que son los que conoce el servidor.
 
 ```bash
 # Terminal 1
@@ -110,6 +111,7 @@ Para agregar tareas propias, edite la lista `TAREAS` en `cliente.py`.
 
 ## Problemas frecuentes
 
-- **`Address already in use`:** el puerto está ocupado por una ejecución anterior. Cierre esos procesos o espere unos segundos.
-- **`Connection refused` en el cliente:** el servidor no está corriendo. Levántelo antes de ejecutar el cliente.
+- **`No se pudo usar el puerto ...: Address already in use`:** el puerto está ocupado por una ejecución anterior. Cierre esos procesos o espere unos segundos.
+- **`Puerto inválido`:** el worker solo acepta los puertos 6001, 6002 y 6003.
+- **`No se pudo conectar a 127.0.0.1:5000`:** el servidor no está corriendo. Levántelo antes de ejecutar el cliente.
 - **`No hay workers disponibles`:** no hay ningún worker activo. Levante al menos uno.
