@@ -29,10 +29,10 @@ El diagrama muestra la arquitectura completa propuesta. El código implementa la
 
 ## Interpretación de la consigna
 
-La consigna pide "rediseñar" el sistema como una arquitectura distribuida. Se tomó como punto de partida el modelo cliente-servidor de los trabajos anteriores y se propuso su versión distribuida:
+La consigna pide "rediseñar" el sistema como una arquitectura distribuida sin especificar el sistema de partida. Se interpretó como proponer una arquitectura distribuida cliente-servidor:
 
-- **Diseño:** el diagrama incorpora todos los componentes pedidos (balanceador, workers con pool de hilos, RabbitMQ, PostgreSQL y S3).
-- **Implementación:** el código implementa el cliente, el servidor que distribuye tareas y los workers, comunicados por sockets. Siguiendo lo aclarado en el foro de consultas de la materia, PostgreSQL se emula con SQLite: cada worker guarda en `tareas.db` las tareas que procesa y su resultado. RabbitMQ y S3 quedan solo en el diagrama.
+- **Diseño:** el diagrama incluye los componentes pedidos.
+- **Implementación:** cliente, servidor que distribuye tareas y workers, comunicados por sockets. PostgreSQL se emula con SQLite; RabbitMQ y S3 quedan solo en el diagrama.
 
 ## Implementación en Python
 
