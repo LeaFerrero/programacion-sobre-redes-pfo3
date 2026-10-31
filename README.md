@@ -18,18 +18,26 @@
 
 El diagrama muestra la arquitectura completa propuesta. El código implementa la parte pedida por la consigna: **cliente, balanceador/despachador y workers** comunicados por sockets.
 
-| Componente del diagrama     | Estado en el código                                    |
-| --------------------------- | ------------------------------------------------------ |
-| Clientes                    | Implementado (`cliente.py`)                            |
-| Balanceador (Nginx/HAProxy) | Simulado por `servidor.py` (round-robin con reintento) |
-| Workers con pool de hilos   | Implementado (`worker.py`, `ThreadPoolExecutor`)       |
-| RabbitMQ                    | Solo en el diseño, no se implementa                    |
-| PostgreSQL / S3             | Solo en el diseño, no se implementa                    |
+| Componente del diagrama     | Estado en el código                                       |
+| --------------------------- | --------------------------------------------------------- |
+| Clientes                    | Implementado (`cliente.py`)                               |
+| Balanceador (Nginx/HAProxy) | Simulado por `servidor.py` (round-robin con reintento)    |
+| Workers con pool de hilos   | Implementado (`worker.py`, `ThreadPoolExecutor`)          |
+| RabbitMQ                    | Solo en el diseño, no se implementa                       |
+| PostgreSQL                  | Emulado con SQLite (`tareas.db`), escrito por los workers |
+| S3                          | Solo en el diseño, no se implementa                       |
+
+## Interpretación de la consigna
+
+La consigna pide "rediseñar" el sistema como una arquitectura distribuida. Se tomó como punto de partida el modelo cliente-servidor de los trabajos anteriores y se propuso su versión distribuida:
+
+- **Diseño:** el diagrama incorpora todos los componentes pedidos (balanceador, workers con pool de hilos, RabbitMQ, PostgreSQL y S3).
+- **Implementación:** el código implementa el cliente, el servidor que distribuye tareas y los workers, comunicados por sockets. Siguiendo lo aclarado en el foro de consultas de la materia, PostgreSQL se emula con SQLite: cada worker guarda en `tareas.db` las tareas que procesa y su resultado. RabbitMQ y S3 quedan solo en el diagrama.
 
 ## Implementación en Python
 
 `servidor.py` cumple el rol del balanceador/despachador (round-robin con reintento),
-`worker.py` es el worker con `ThreadPoolExecutor`, y `cliente.py` envía tareas y recibe resultados.
+`worker.py` es el worker con `ThreadPoolExecutor`, que además guarda cada tarea y su resultado en SQLite, y `cliente.py` envía tareas y recibe resultados.
 Protocolo: un mensaje JSON por línea sobre TCP.
 
 ## Requisitos
@@ -50,6 +58,7 @@ cd programacion-sobre-redes-pfo3
 
 Cada worker recibe el puerto y, opcionalmente, la cantidad de hilos de su pool (por defecto 4).
 Solo se aceptan los puertos **6001, 6002 y 6003**, que son los que conoce el servidor.
+Todos los workers deben ejecutarse desde la misma carpeta: comparten el archivo `tareas.db`, que se crea automáticamente al iniciar el primero.
 
 ```bash
 # Terminal 1
@@ -97,6 +106,14 @@ Los workers que procesan cada tarea pueden variar entre ejecuciones. La tarea 5 
 1. Con todo corriendo, cierre un worker con `Ctrl + C`.
 2. Vuelva a ejecutar `python cliente.py`.
 3. El servidor muestra `worker ... no disponible, probando otro` y las tareas se completan con los workers restantes.
+
+## Consultar las tareas guardadas
+
+Cada tarea procesada queda registrada en `tareas.db` (id de la tarea, tipo, datos, si fue exitosa, resultado o error, worker y fecha). Para verlas:
+
+```bash
+python -c "import sqlite3; [print(f) for f in sqlite3.connect('tareas.db').execute('select * from tareas')]"
+```
 
 ## Tipos de tareas disponibles
 
