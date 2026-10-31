@@ -4,7 +4,7 @@
 
 ## Diagrama de arquitectura
 
-![Diagrama de arquitectura](diagrama/diagrama.png)
+![Diagrama de arquitectura](diagrama.png)
 
 **Rol de cada componente**
 
@@ -13,6 +13,18 @@
 - **Workers:** cada uno procesa tareas con su propio pool de hilos.
 - **RabbitMQ:** comunicación asíncrona entre servidores (eventos, tareas largas, reintentos).
 - **PostgreSQL / S3:** persistencia de datos estructurados y de archivos.
+
+## Alcance de la implementación
+
+El diagrama muestra la arquitectura completa propuesta. El código implementa la parte pedida por la consigna: **cliente, balanceador/despachador y workers** comunicados por sockets.
+
+| Componente del diagrama     | Estado en el código                                    |
+| --------------------------- | ------------------------------------------------------ |
+| Clientes                    | Implementado (`cliente.py`)                            |
+| Balanceador (Nginx/HAProxy) | Simulado por `servidor.py` (round-robin con reintento) |
+| Workers con pool de hilos   | Implementado (`worker.py`, `ThreadPoolExecutor`)       |
+| RabbitMQ                    | Solo en el diseño, no se implementa                    |
+| PostgreSQL / S3             | Solo en el diseño, no se implementa                    |
 
 ## Implementación en Python
 
