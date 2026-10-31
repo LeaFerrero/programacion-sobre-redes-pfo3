@@ -4,7 +4,7 @@
 
 ## Diagrama de arquitectura
 
-![Diagrama de arquitectura](diagrama.png)
+![Diagrama de arquitectura](diagrama/diagrama.png)
 
 **Rol de cada componente**
 
