@@ -2,6 +2,7 @@
 
 Uso: python cliente.py
 """
+
 import json
 import socket
 
@@ -16,17 +17,29 @@ TAREAS = [
     {"id": 5, "tipo": "inexistente", "datos": None},  # prueba de error
 ]
 
+
 def main():
-    with socket.create_connection((HOST, PUERTO), timeout=10) as s:
-        lector = s.makefile("r", encoding="utf-8")
-        for tarea in TAREAS:
-            s.sendall((json.dumps(tarea) + "\n").encode("utf-8"))
-            respuesta = json.loads(lector.readline())
-            if respuesta.get("ok"):
-                print(f"Tarea {respuesta['id']} -> {respuesta['resultado']} "
-                      f"(procesada por {respuesta['worker']})")
-            else:
-                print(f"Tarea {respuesta.get('id')} -> ERROR: {respuesta['error']}")
+    try:
+        with socket.create_connection((HOST, PUERTO), timeout=10) as s:
+            lector = s.makefile("r", encoding="utf-8")
+            for tarea in TAREAS:
+                s.sendall((json.dumps(tarea) + "\n").encode("utf-8"))
+                linea = lector.readline()
+                if not linea:
+                    print("El servidor cerró la conexión.")
+                    return
+                respuesta = json.loads(linea)
+                if respuesta.get("ok"):
+                    print(
+                        f"Tarea {respuesta['id']} -> {respuesta['resultado']} " f"(procesada por {respuesta['worker']})"
+                    )
+                else:
+                    print(f"Tarea {respuesta.get('id')} -> ERROR: {respuesta['error']}")
+    except ConnectionRefusedError:
+        print(f"No se pudo conectar a {HOST}:{PUERTO}. " "¿Está corriendo servidor.py?")
+    except OSError as e:
+        print(f"Error de red: {e}")
+
 
 if __name__ == "__main__":
     main()
